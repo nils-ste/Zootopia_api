@@ -2,6 +2,7 @@ import json
 import requests
 
 api_key = '2liTlUsVmStB+RfCg9nxgA==irVQNDJOC7iURQPB'
+animal_name = input("What is your animal? ")
 
 
 
@@ -11,7 +12,6 @@ with open ('animals_template.html', 'r') as template:
 
 def load_data(file_path):
   """ Loads data from api """
-  animal_name = input("What is your animal? ")
   url = f'https://api.api-ninjas.com/v1/animals?name={animal_name}'
   res = requests.get(url, headers={'X-Api-Key': api_key})
   return res.json()
@@ -54,11 +54,14 @@ def serialize_animal(animal_obj):
     return output
 
 
-output = ''
-for animal in animals_data:
-    output += serialize_animal(animal)
+animals_serialized = ''
 
-animals_output = animals_template.replace("__REPLACE_ANIMALS_INFO__", output)
+if animals_data != []:
+    for animal in animals_data:
+        animals_serialized += serialize_animal(animal)
+        animals_output = animals_template.replace("__REPLACE_ANIMALS_INFO__", animals_serialized)
+else:
+    animals_output = animals_template.replace("__REPLACE_ANIMALS_INFO__", f"<h2>The animal {animal_name} doesn't exist.</h2>")
 
 with open ('animals.html', 'w') as out:
     out.write(animals_output)
