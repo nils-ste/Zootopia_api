@@ -1,10 +1,8 @@
 import json
 import requests
-animal_name = input("What is your animal? ")
-url = f'https://api.api-ninjas.com/v1/animals?name={animal_name}'
+
 api_key = '2liTlUsVmStB+RfCg9nxgA==irVQNDJOC7iURQPB'
-res = requests.get(url, headers={'X-Api-Key': api_key})
-print(res.json())
+
 
 
 with open ('animals_template.html', 'r') as template:
@@ -12,9 +10,11 @@ with open ('animals_template.html', 'r') as template:
 
 
 def load_data(file_path):
-  """ Loads a JSON file """
-  with open(file_path, "r") as handle:
-    return json.load(handle)
+  """ Loads data from api """
+  animal_name = input("What is your animal? ")
+  url = f'https://api.api-ninjas.com/v1/animals?name={animal_name}'
+  res = requests.get(url, headers={'X-Api-Key': api_key})
+  return res.json()
 
 
 animals_data = load_data('animals_data.json')
